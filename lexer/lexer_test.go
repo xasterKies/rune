@@ -17,11 +17,11 @@ func TestNextToken(t *testing.T) {
 		{token.PLUS, "+"},
 		{token.LPAREN, "("},
 		{token.RPAREN, ")"},
-		{token.ASSIGN, "{"},
-		{token.ASSIGN, "}"},
-		{token.ASSIGN, ","},
-		{token.ASSIGN, ";"},
-		{token.ASSIGN, ""},
+		{token.LBRACE, "{"},
+		{token.RBRACE, "}"},
+		{token.COMMA, ","},
+		{token.SEMICOLON, ";"},
+		{token.EOF, ""},
 	}
 
 	l := New(input)
