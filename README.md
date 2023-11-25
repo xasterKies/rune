@@ -1,2 +1,2 @@
 # rune
-rune: A minimal proof of concept bytecode programming language
+rune(the writings in the stone): A minimal proof of concept bytecode interpreted programming language
