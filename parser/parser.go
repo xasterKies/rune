@@ -14,7 +14,15 @@ type Parser struct {
 
 	curToken token.Token
 	peekToken token.Token
+
+	prefixParseFns map[token.TokenType]prefixParseFn
+	infinixParseFns map[token.TokenType]infinixParseFn
 }
+
+type (
+	prefixParseFn func() ast.Expression
+	infinixParseFn func(ast.Expression) ast.Expression
+)
 
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{
@@ -120,3 +128,12 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 	}
 }
 
+func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
+	p.prefixParseFns[tokenType] = fn
+}
+
+func (p *Parser) registerInfinix(tokenType token.TokenType, fn infinixParseFn) {
+	p.infinixParseFns[tokenType] = fn
+}
+
+// pg 53 Indentifiers
