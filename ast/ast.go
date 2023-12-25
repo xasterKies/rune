@@ -26,20 +26,20 @@ type Program struct {
 }
 
 type ExpressionStatement struct {
-	Token 		token.Token // the first token of the expression
-	Expression	Expression
+	Token      token.Token // the first token of the expression
+	Expression Expression
 }
 
-func (es *ExpressionStatement) statementNode() {}
+func (es *ExpressionStatement) statementNode()       {}
 func (es *ExpressionStatement) TokenLiteral() string { return es.Token.Literal }
 
 type ReturnStatement struct {
-	Token		token.Token // the 'return' token
+	Token       token.Token // the 'return' token
 	ReturnValue Expression
 }
 
-func (rs *ReturnStatement) statementNode() {}
-func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal}
+func (rs *ReturnStatement) statementNode()       {}
+func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal }
 
 func (p *Program) TokenLiteral() string {
 	if len(p.Statements) > 0 {
@@ -51,7 +51,7 @@ func (p *Program) TokenLiteral() string {
 
 type LetStatement struct {
 	Token token.Token // the token.LET token
-	Name *Identifier
+	Name  *Identifier
 	Value Expression
 }
 
@@ -130,6 +130,21 @@ type IntegerLiteral struct {
 	Value int64
 }
 
-func (il *IntegerLiteral) expressionNode() {}
-func (il *IntegerLiteral) TokenLiteral() string {return il.Token.Literal}
-func (il *IntegerLiteral) String() string {return il.Token.Literal}
+func (il *IntegerLiteral) expressionNode()      {}
+func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
+func (il *IntegerLiteral) String() string       { return il.Token.Literal }
+
+type PrefixExpression struct {
+	Token    token.Token // The prefix token, e.g. !
+	Operator string
+	Right    Expression
+}
+
+func (pe *PrefixExpression) expressionNode() {}
+func (pe *PrefixExpression) TokenLiteral() string { return pe.Token.Literal }
+func (pe *PrefixExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("(")
+	
+}
