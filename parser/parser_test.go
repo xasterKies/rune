@@ -24,8 +24,8 @@ let foobar = 838383;
 		t.Fatalf("ParseProgram() returned nil")
 	}
 	if len(program.Statements) != 3 {
-		t.Fatalf("program.Statements does not contain 3 statements. got=%d", 
-			len(program.Statements))	
+		t.Fatalf("program.Statements does not contain 3 statements. got=%d",
+			len(program.Statements))
 	}
 
 	tests := []struct {
@@ -60,7 +60,7 @@ func TestReturnStatements(t *testing.T) {
 
 	if len(program.Statements) != 3 {
 		t.Fatalf("program.Statements does not contain 3 statements. got=%d", len(program.Statements))
-		
+
 	}
 
 	for _, stmt := range program.Statements {
@@ -70,7 +70,7 @@ func TestReturnStatements(t *testing.T) {
 			continue
 		}
 		if returnStmt.TokenLiteral() != "return" {
-			t.Errorf("returnStmt.TokenLiteral not 'return', got %q", 
+			t.Errorf("returnStmt.TokenLiteral not 'return', got %q",
 				returnStmt.TokenLiteral())
 		}
 	}
@@ -79,16 +79,16 @@ func TestReturnStatements(t *testing.T) {
 func checkParserErrors(t *testing.T, p *Parser) {
 	errors := p.Errors()
 
-	if len(errors) == 0 { 
+	if len(errors) == 0 {
 		return
-	 }
+	}
 
-	 t.Errorf("parser has %d errors", len(errors))
-	 for _, msg := range errors {
+	t.Errorf("parser has %d errors", len(errors))
+	for _, msg := range errors {
 		t.Errorf("parser error: %q", msg)
-	 }
+	}
 
-	 t.FailNow()
+	t.FailNow()
 
 }
 
@@ -116,7 +116,7 @@ func TestIdentifierExpression(t *testing.T) {
 	input := "foobar"
 
 	l := lexer.New(input)
-	
+
 	p := New(l)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
@@ -137,7 +137,7 @@ func TestIdentifierExpression(t *testing.T) {
 		t.Errorf("ident.Value not %s. got=%s", "foobar", ident.Value)
 	}
 	if ident.TokenLiteral() != "foobar" {
-		t.Errorf("ident.TokenLiteral not %s. got=%s", "foobar", 
+		t.Errorf("ident.TokenLiteral not %s. got=%s", "foobar",
 			ident.TokenLiteral())
 	}
 
@@ -157,7 +157,7 @@ func TestIntegerLiteralExpression(t *testing.T) {
 	if len(program.Statements) != 1 {
 		t.Fatalf("program has not enough statements. got=%d", len(program.Statements))
 	}
-	
+
 	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
 	if !ok {
 		t.Fatalf("program.Statement[0] is not ast.ExpressionStatement. got=%T", program.Statements[0])
@@ -170,7 +170,7 @@ func TestIntegerLiteralExpression(t *testing.T) {
 		t.Errorf("literal.Value not %d. got=%d", 5, literal.Value)
 	}
 	if literal.TokenLiteral() != "5" {
-		t.Errorf("literal.TokenLiteral not %s. got=%s", "5", 
+		t.Errorf("literal.TokenLiteral not %s. got=%s", "5",
 			literal.TokenLiteral())
 	}
 }
@@ -202,8 +202,8 @@ func testIntegerLiteral(t *testing.T, il ast.Expression, value int64) bool {
 
 func TestParsingPrefixExpression(t *testing.T) {
 	prefixTests := []struct {
-		input		string
-		operator 	string
+		input        string
+		operator     string
 		integerValue int64
 	}{
 		{"!5", "!", 5},
@@ -217,13 +217,13 @@ func TestParsingPrefixExpression(t *testing.T) {
 		checkParserErrors(t, p)
 
 		if len(program.Statements) != 1 {
-			t.Fatalf("program.Statements does not contain %d statements. got=%d\n", 
+			t.Fatalf("program.Statements does not contain %d statements. got=%d\n",
 				1, len(program.Statements))
 		}
 
 		stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
 		if !ok {
-			t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T", 
+			t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T",
 				program.Statements[0])
 		}
 
@@ -233,7 +233,7 @@ func TestParsingPrefixExpression(t *testing.T) {
 		}
 		if exp.Operator != tt.operator {
 			t.Fatalf("exp.Operator is not '%s' . got=%s",
-				tt.operator, exp.Operator)	
+				tt.operator, exp.Operator)
 		}
 
 		if !testIntegerLiteral(t, exp.Right, tt.integerValue) {
@@ -242,3 +242,20 @@ func TestParsingPrefixExpression(t *testing.T) {
 	}
 }
 
+func TestParsingInfinixExpression(t *testing.T) {
+	infinixTests := []struct {
+		input      string
+		leftValue  int64
+		operator   string
+		rightValue int64
+	}{
+		{"5 + 5;", 5, "+", 5},
+		{"5 - 5;", 5, "-", 5},
+		{"5 * 5;", 5, "*", 5},
+		{"5 / 5;", 5, "/", 5},
+		{"5 > 5;", 5, ">", 5},
+		{"5 < 5;", 5, "<", 5},
+		{"5 == 5;", 5, "==", 5},
+		{"5 != 5;", 5, "!=", 5},
+	}
+}
