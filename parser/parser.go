@@ -45,9 +45,18 @@ func New(l *lexer.Lexer) *Parser {
 	p.prefixParseFns = make(map[token.TokenType]prefixParseFn)
 	p.registerPrefix(token.IDENT, p.parseIdentifier)
 	p.registerPrefix(token.INT, p.parseIntegerLiteral)
-	
 	p.registerPrefix(token.BANG, p.parsePrefixExpression)
 	p.registerPrefix(token.MINUS, p.parsePrefixExpression)
+
+	p.infinixParseFns = make(map[token.TokenType]infinixParseFn)
+	p.registerInfinix(token.PLUS, p.parseInfinixExpression)
+	p.registerInfinix(token.MINUS, p.parseInfinixExpression)
+	p.registerInfinix(token.SLASH, p.parseInfinixExpression)
+	p.registerInfinix(token.ASTERISK, p.parseInfinixExpression)
+	p.registerInfinix(token.EQ, p.parseInfinixExpression)
+	p.registerInfinix(token.NOT_EQ, p.parseInfinixExpression)
+	p.registerInfinix(token.LT, p.parseInfinixExpression)
+	p.registerInfinix(token.GT, p.parseInfinixExpression)
 
 	// Read two tokens, so curToken and peekToken are both set
 	p.nextToken()
@@ -213,4 +222,31 @@ func (p *Parser) parsePrefixExpression() ast.Expression {
 	expression.Right = p.parseExpression(PREFIX)
 
 	return expression
+}
+
+var precedences = map[token.TokenType]int{
+	token.EQ:		EQUALS,
+	token.NOT_EQ:	EQUALS,
+	token.LT:		LESSGREATER,
+	token.GT:		LESSGREATER,
+	token.PLUS:		SUM,
+	token.MINUS:	SUM,
+	token.SLASH:    PRODUCT,
+	token.ASTERISK: PRODUCT,
+}
+
+func (p *Parser) peekPrecedence() int {
+	if p, ok := precedences[p.peekToken.Type]; ok {
+		return p
+	}
+
+	return LOWEST
+}
+
+func (p *Parser) curPrecedence() int {
+	if p, ok := precedences[p.curToken.Type]; ok {
+		return p
+	}
+
+	return LOWEST
 }
