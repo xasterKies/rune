@@ -162,7 +162,7 @@ type InfinixExpression struct {
 }
 
 func (oe *InfinixExpression) expressionNode() {}
-func (oe *InfinixExpression) TokengLiteral() string { return oe.Token.Literal }
+func (oe *InfinixExpression) TokenLiteral() string { return oe.Token.Literal }
 func (oe *InfinixExpression) String() string {
 	var out bytes.Buffer
 	

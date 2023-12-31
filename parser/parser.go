@@ -184,6 +184,17 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 	}
 	leftExp := prefix()
 
+	for !p.peekTokenIs(token.SEMICOLON) && precedence < p.peekPrecedence() {
+		infinix := p.infinixParseFns[p.peekToken.Type]
+		if infinix == nil {
+			return leftExp
+		}
+
+		p.nextToken()
+
+		leftExp = infinix(leftExp)
+	}
+
 	return leftExp
 }
 
@@ -250,3 +261,19 @@ func (p *Parser) curPrecedence() int {
 
 	return LOWEST
 }
+
+func (p *Parser) parseInfinixExpression(left ast.Expression) ast.Expression {
+	expression := &ast.InfinixExpression{
+		Token: p.curToken,
+		Operator: p.curToken.Literal,
+		Left: left,
+	}
+
+	precedence := p.curPrecedence()
+	p.nextToken()
+	expression.Right = p.parseExpression(precedence)
+
+	return expression
+}
+
+
