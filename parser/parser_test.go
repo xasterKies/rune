@@ -292,3 +292,7 @@ func TestParsingInfinixExpression(t *testing.T) {
 		}
 	}
 }
+
+func TestOperatorPrecedenceParsing(t *testing.T) {
+	
+}
