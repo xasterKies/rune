@@ -1,6 +1,6 @@
 # ![](resources/rune-lang.png)
 
-## A minimal* proof of concept bytecode interpreted Programing Language
+## A mini proof of concept bytecode interpreted Programing Language
 
 ---
 
@@ -84,7 +84,7 @@ $ go run main.go
 
 ## Contributing 👥 🔧:
 
-> Note: You need **Go** 3.6.x+ and **git** installed.<br>
+> Note: You need **Go** 1.21.6+ and **git** installed.<br>
 
 ```sh
 # clone the repo and Navigate into repo
@@ -111,7 +111,7 @@ rune
 .
 ```
 
->Note: This structure can change since its still in development
+>Note: This structure can change since its still in development.
 
 Feel free to open a PR or issue to discuss any bugs 🪲, improvements 📈, Ideas 💡, etc.
 
