@@ -6,7 +6,7 @@
 
 ## Why?
 
-Compilers & Interpreters are magical & fascinating! I was curious about how compilers and intepreters work under the hood. In an attempt to understand, I started working on this :D
+I find compilers and interpreters fascinating and I was curious about what happens when you click the compile button in an IDE. In an attempt to understand, I started working on this :D
 
 ## About 📖
 Rune is an intuitive, high-level dynamically typed Programming Language.
