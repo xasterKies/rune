@@ -15,8 +15,12 @@ Rune is an intuitive, high-level dynamically typed Programming Language.
 
 ## Rune's Interpreter & Compiler ⚙️
 
- Rune lang has an inbuilt interpreter, compiler and interactive shell for invoking and interacting with rune lang's API and instances of rune's runtime environement, all assembled from scratch.
+ Rune lang has an inbuilt interpreter, compiler and interactive shell for invoking and interacting with rune lang's API and instances of rune's runtime environements.
 
+ - ### Interpreter design
+
+
+ - ### Compiler design
  > Note: Rune's interpreter & compiler are still in development.
 
  ---
