@@ -6,7 +6,7 @@
 
 ## Why?
 
-Compilers & Interpreters are magical & fascinating! I was curious about how compilers and intepreters work under the hood. In an attempt to understand, I started working on this :D
+I find compilers and interpreters fascinating and I was curious about what happens when you click the compile button in an IDE. In an attempt to understand, I started working on this :D
 
 ## About 📖
 Rune is an intuitive, high-level dynamically typed Programming Language.
@@ -15,8 +15,12 @@ Rune is an intuitive, high-level dynamically typed Programming Language.
 
 ## Rune's Interpreter & Compiler ⚙️
 
- Rune lang has an inbuilt interpreter, compiler and interactive shell for invoking and interacting with rune lang's API and instances of rune's runtime environement, all assembled from scratch.
+ Rune lang has an inbuilt interpreter, compiler and interactive shell for invoking and interacting with rune lang's API and instances of rune's runtime environements.
 
+ - ### Interpreter design
+
+
+ - ### Compiler design
  > Note: Rune's interpreter & compiler are still in development.
 
  ---
