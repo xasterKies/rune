@@ -47,6 +47,8 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.INT, p.parseIntegerLiteral)
 	p.registerPrefix(token.BANG, p.parsePrefixExpression)
 	p.registerPrefix(token.MINUS, p.parsePrefixExpression)
+	p.registerPrefix(token.TRUE, p.parseBoolean)
+	p.registerPrefix(token.FALSE, p.parseBoolean)
 
 	p.infinixParseFns = make(map[token.TokenType]infinixParseFn)
 	p.registerInfinix(token.PLUS, p.parseInfinixExpression)
@@ -57,6 +59,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfinix(token.NOT_EQ, p.parseInfinixExpression)
 	p.registerInfinix(token.LT, p.parseInfinixExpression)
 	p.registerInfinix(token.GT, p.parseInfinixExpression)
+
 
 	// Read two tokens, so curToken and peekToken are both set
 	p.nextToken()
@@ -284,4 +287,8 @@ func (p *Parser) parseInfinixExpression(left ast.Expression) ast.Expression {
 	expression.Right = p.parseExpression(precedence)
 
 	return expression
+}
+
+func (p *Parser) parseBoolean() ast.Expression {
+	return &ast.Boolean{Token: p.curToken, Value: p.curTokenIs(token.TRUE)}
 }
