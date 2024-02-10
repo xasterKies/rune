@@ -155,16 +155,16 @@ func (pe *PrefixExpression) String() string {
 
 }
 
-type InfinixExpression struct {
+type InfixExpression struct {
 	Token    token.Token
 	Left     Expression
 	Operator string
 	Right    Expression
 }
 
-func (oe *InfinixExpression) expressionNode()      {}
-func (oe *InfinixExpression) TokenLiteral() string { return oe.Token.Literal }
-func (oe *InfinixExpression) String() string {
+func (oe *InfixExpression) expressionNode()      {}
+func (oe *InfixExpression) TokenLiteral() string { return oe.Token.Literal }
+func (oe *InfixExpression) String() string {
 	var out bytes.Buffer
 
 	out.WriteString("(")
@@ -258,7 +258,7 @@ type CallExpression struct {
 	Arguments []Expression
 }
 
-func (ce *CallExpression) expressionNode() {}
+func (ce *CallExpression) expressionNode()      {}
 func (ce *CallExpression) TokenLiteral() string { return ce.Token.Literal }
 func (ce *CallExpression) String() string {
 	var out bytes.Buffer
