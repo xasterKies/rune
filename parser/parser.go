@@ -27,13 +27,13 @@ type Parser struct {
 	curToken  token.Token
 	peekToken token.Token
 
-	prefixParseFns  map[token.TokenType]prefixParseFn
-	infinixParseFns map[token.TokenType]infinixParseFn
+	prefixParseFns map[token.TokenType]prefixParseFn
+	infixParseFns  map[token.TokenType]infixParseFn
 }
 
 type (
-	prefixParseFn  func() ast.Expression
-	infinixParseFn func(ast.Expression) ast.Expression
+	prefixParseFn func() ast.Expression
+	infixParseFn  func(ast.Expression) ast.Expression
 )
 
 func New(l *lexer.Lexer) *Parser {
@@ -53,16 +53,16 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.IF, p.parseIfExpression)
 	p.registerPrefix(token.FUNCTION, p.parseFunctionLiteral)
 
-	p.infinixParseFns = make(map[token.TokenType]infinixParseFn)
-	p.registerInfinix(token.PLUS, p.parseInfinixExpression)
-	p.registerInfinix(token.MINUS, p.parseInfinixExpression)
-	p.registerInfinix(token.SLASH, p.parseInfinixExpression)
-	p.registerInfinix(token.ASTERISK, p.parseInfinixExpression)
-	p.registerInfinix(token.EQ, p.parseInfinixExpression)
-	p.registerInfinix(token.NOT_EQ, p.parseInfinixExpression)
-	p.registerInfinix(token.LT, p.parseInfinixExpression)
-	p.registerInfinix(token.GT, p.parseInfinixExpression)
-	p.registerInfinix(token.LPAREN, p.parseCallExpression)
+	p.infixParseFns = make(map[token.TokenType]infixParseFn)
+	p.registerInfix(token.PLUS, p.parseinfixExpression)
+	p.registerInfix(token.MINUS, p.parseinfixExpression)
+	p.registerInfix(token.SLASH, p.parseinfixExpression)
+	p.registerInfix(token.ASTERISK, p.parseinfixExpression)
+	p.registerInfix(token.EQ, p.parseinfixExpression)
+	p.registerInfix(token.NOT_EQ, p.parseinfixExpression)
+	p.registerInfix(token.LT, p.parseinfixExpression)
+	p.registerInfix(token.GT, p.parseinfixExpression)
+	p.registerInfix(token.LPAREN, p.parseCallExpression)
 
 	// Read two tokens, so curToken and peekToken are both set
 	p.nextToken()
@@ -173,8 +173,8 @@ func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
 	p.prefixParseFns[tokenType] = fn
 }
 
-func (p *Parser) registerInfinix(tokenType token.TokenType, fn infinixParseFn) {
-	p.infinixParseFns[tokenType] = fn
+func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) {
+	p.infixParseFns[tokenType] = fn
 }
 
 func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
@@ -202,14 +202,14 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 	leftExp := prefix()
 
 	for !p.peekTokenIs(token.SEMICOLON) && precedence < p.peekPrecedence() {
-		infinix := p.infinixParseFns[p.peekToken.Type]
-		if infinix == nil {
+		infix := p.infixParseFns[p.peekToken.Type]
+		if infix == nil {
 			return leftExp
 		}
 
 		p.nextToken()
 
-		leftExp = infinix(leftExp)
+		leftExp = infix(leftExp)
 	}
 
 	return leftExp
@@ -282,10 +282,10 @@ func (p *Parser) curPrecedence() int {
 	return LOWEST
 }
 
-func (p *Parser) parseInfinixExpression(left ast.Expression) ast.Expression {
+func (p *Parser) parseinfixExpression(left ast.Expression) ast.Expression {
 	defer untrace(trace("parseInfixExpression"))
 
-	expression := &ast.InfinixExpression{
+	expression := &ast.InfixExpression{
 		Token:    p.curToken,
 		Operator: p.curToken.Literal,
 		Left:     left,

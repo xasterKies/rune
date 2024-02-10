@@ -31,7 +31,7 @@ func TestLetStatements(t *testing.T) {
 	tests := []struct {
 		input              string
 		expectedIdentifier string
-		expectedValue        interface{}
+		expectedValue      interface{}
 	}{
 		{"let x = 5;", "x", 5},
 		{"let y = true;", "y", true},
@@ -260,8 +260,8 @@ func TestParsingPrefixExpression(t *testing.T) {
 	}
 }
 
-func TestParsingInfinixExpression(t *testing.T) {
-	infinixTests := []struct {
+func TestParsinginfixExpression(t *testing.T) {
+	infixTests := []struct {
 		input      string
 		leftValue  interface{}
 		operator   string
@@ -280,7 +280,7 @@ func TestParsingInfinixExpression(t *testing.T) {
 		{"false == false", false, "==", false},
 	}
 
-	for _, tt := range infinixTests {
+	for _, tt := range infixTests {
 		l := lexer.New(tt.input)
 		p := New(l)
 		program := p.ParseProgram()
@@ -295,9 +295,9 @@ func TestParsingInfinixExpression(t *testing.T) {
 			t.Fatalf("program.Statement[0] is not ast.ExpressionStatement. got=%T", program.Statements[0])
 		}
 
-		exp, ok := stmt.Expression.(*ast.InfinixExpression)
+		exp, ok := stmt.Expression.(*ast.InfixExpression)
 		if !ok {
-			t.Fatalf("exp is not ast.InfinixExpression. got=%T", stmt.Expression)
+			t.Fatalf("exp is not ast.infixExpression. got=%T", stmt.Expression)
 		}
 
 		// if !testIntegerLiteral(t, exp.Left, tt.leftValue) {
@@ -486,7 +486,7 @@ func testLiteralExpression(
 func testInfixExpresion(t *testing.T, exp ast.Expression, left interface{},
 	operator string, right interface{}) bool {
 
-	opExp, ok := exp.(*ast.InfinixExpression)
+	opExp, ok := exp.(*ast.InfixExpression)
 	if !ok {
 		t.Errorf("exp is not ast.OperatorExpression. got=%T(%s)", exp, exp)
 		return false
